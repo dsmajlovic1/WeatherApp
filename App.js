@@ -1,21 +1,19 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {createStackNavigator} from 'react-navigation-stack';
+import {createAppContainer} from 'react-navigation';
+import HomeScreen from "./src/screens/HomeScreen"
+import DetailsScreen from "./src/screens/DetailsScreen";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+//ApiKey
+//4b1e7d2cbc6bfd585086d380ffc422d4
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+const navigator = createStackNavigator({
+  Details: DetailsScreen,
+  HomeScr: HomeScreen
+}, {
+  initialRouteName: 'HomeScr',
+  defaultNavigationOptions:{
+    title: 'Weather App'
+  }
 });
+
+export default createAppContainer(navigator);
