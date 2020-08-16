@@ -28,7 +28,7 @@ const getIcon = (weather) => {
 };
 
 const DetailsScreen = ({navigation}) => {
-    const [apiCitySearch, results, errorMsg] = useWeatherCity(navigation.getParam("id"));
+    const [apiCitySearch, results, errorMsg] = useWeatherCity(navigation.getParam("lat"), navigation.getParam("lon"));
     const [apiForecastSearch, forecastRslt, forecastErr] = useForecast(navigation.getParam("lat"), navigation.getParam("lon"));
 
     console.log("details screen");
@@ -45,13 +45,13 @@ const DetailsScreen = ({navigation}) => {
             <View style={styles.currentContainer}>
                 <Text style={styles.title}>{results.name}</Text>
                 <View style={styles.mainInfo}>
-                    <Feather name={iconName} style={styles.iconStyle}/>
-                    <View style={styles.mainSub}>
-                        <Text style={styles.temperature}>{Math.round(results.main.temp)}°C</Text>
-                        <Text>{results.weather[0].description}</Text>
-                        <Text>Feels like: {Math.round(results.main.feels_like)}°C</Text>
-                    </View>
                     
+                    <View style={styles.mainSub}>
+                    <Feather name={iconName} style={styles.iconStyle}/>
+                        <Text style={styles.temperature}>{Math.round(results.main.temp)}°C</Text>                        
+                    </View>
+                        <Text>Feels like: {Math.round(results.main.feels_like)}°C</Text>
+                        <Text>{results.weather[0].description}</Text>
                 </View>
                 <View style={{flexDirection:"row"}}>
                     <View style={{flex:1}}>
@@ -71,12 +71,11 @@ const DetailsScreen = ({navigation}) => {
                 <Text style={styles.forecastTitle}>Forecast</Text>
                 
                 <FlatList
-                    style={{borderWidth:0}}
-                    
+                contentContainerStyle={styles.contentContainer}
                     horizontal={false}
-                    numColumns={3}
+                    numColumns={4}
                     data={forecastRslt}
-                    keyExtractor={(item)=> item.dt}
+                    keyExtractor={(item)=> String(item.dt)}
                     renderItem={({item}) => {
                         var itemDate = new Date(item.dt);
                         var moment = require('moment');
@@ -85,13 +84,14 @@ const DetailsScreen = ({navigation}) => {
                         return (
                             <View style={styles.dailyForecast}>
                                 <Text>{Moment(new Date(item.dt)).format('d MMM')}</Text>
-                                <Feather name={getIcon(item.weather[0].main)} style={{fontSize:50}}/>
+                                <Feather name={getIcon(item.weather[0].main)} style={styles.forecastIcon}/>
                                 <Text>Min: {Math.round(item.temp.min)}°C</Text>
                                 <Text>Max: {Math.round(item.temp.max)}°C</Text>
                             </View>
                         );
                     }}
                 />
+                
             </View>
         </>
     );
@@ -103,38 +103,53 @@ const styles = StyleSheet.create({
         marginHorizontal:10
     },
     title:{
-        fontSize:30,
+        fontSize:35,
         fontWeight:"bold",
         
     },
     mainInfo:{
-        margin:10,
-        flexDirection:"row",
+        alignItems:"center",
+        marginVertical:5,
+        borderWidth:1,
+        borderRadius:10,
+        borderColor: 'gray',
+        backgroundColor: '#E0E0E0',
+        padding:10
     },
     mainSub:{
-        flex:2
+        alignSelf:"center",
+        flexDirection:"row"
     },
     temperature:{
-        fontSize:70
+        fontSize:90,
+        marginHorizontal:10
     },
     iconStyle:{
         alignSelf:"center",
         fontSize:100,
-        marginHorizontal:15,
+        marginHorizontal:10,
         flex:1
     },
     forecastContainer:{
-        marginVertical:5,
-        marginHorizontal:10
+        marginHorizontal:5,
+        flex:1
     },
     forecastTitle:{
-        fontSize:20,
+        fontSize:25,
         fontWeight:"bold",
+        marginLeft:5
+    },
+    forecastIcon:{
+        fontSize:65
+    },
+    contentContainer:{
+        alignContent:"stretch",
+        flexDirection:"column"
     },
     dailyForecast:{
-        flex:0.5,
+        flex:1,
         margin:5,
-        backgroundColor: '#DFDFDF',
+        backgroundColor: '#E0E0E0',
         borderRadius:5,
         padding:10
     }

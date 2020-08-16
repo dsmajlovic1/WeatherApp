@@ -21,7 +21,7 @@ export default () => {
     };
 
     useEffect(()=>{
-        citySearch('London,UK');
+        citySearch('Sarajevo');
     },[]);
 
     return [citySearch, results, errorMsg];

@@ -52,21 +52,22 @@ const styles = StyleSheet.create({
         flexDirection:"row",
         alignItems: "center",
         backgroundColor: '#DEDEDE',
-        borderRadius:5
+        borderRadius:10,
+        paddingVertical:10
     },
     infoContainer:{
         flex:1
     },
     name:{
-        fontSize:20
+        fontSize:22
     },
     temperature:{
         alignSelf:"center",
-        fontSize:60,
+        fontSize:65,
         marginHorizontal:15
     },
     iconStyle:{
-        fontSize:60,
+        fontSize:65,
         alignSelf:"center",
         marginHorizontal:15
     }
